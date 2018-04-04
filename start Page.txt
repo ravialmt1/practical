@@ -1,0 +1,8 @@
+New User Pages
+Sign up form (F.Name,L.Name,U.Name,Pswd,E-mail,Mobile)
+Welcome message after sign up
+Let me know more about you(Upload photo, Facebook address)
+Let me know about your school/College(School Name, Address, Phone, head of institution)
+Let us know what modules you are looking at(Module list)
+Add Classes
+Congratulations you are done!!! Now you can start using MS2
