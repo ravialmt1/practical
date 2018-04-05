@@ -164,7 +164,7 @@ dmstr\web\AdminLteAsset::register($this);
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
-        Powered by <strong><a href="http://phundament.com">Mishika &reg</a></strong>
+        Powered by <strong><a href="http://bagalatti.in">Mishika &reg</a></strong>
     </footer>
 </div>
 <!-- ./wrapper -->
@@ -173,3 +173,6 @@ dmstr\web\AdminLteAsset::register($this);
 </body>
 </html>
 <?php $this->endPage() ?>
+<script type="text/javascript">
+    
+</script>

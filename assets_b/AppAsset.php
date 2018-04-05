@@ -35,6 +35,7 @@ class AppAsset extends AssetBundle
     public $js = [
 	'@app\vendor\AdminLTE\dist\js\adminlte.js',
 	'@app\vendor\AdminLTE\dist\js\adminlte.min.js',
+	'@app\js\modal-cal.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
