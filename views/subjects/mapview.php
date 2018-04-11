@@ -5,23 +5,22 @@ use yii\widgets\DetailView;
 use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Faculty */
+/* @var $model app\models\Subjects */
 
-$this->title = $model->fac_id;
-$this->params['breadcrumbs'][] = ['label' => 'Faculty', 'url' => ['index']];
+$this->title = $model->sub_name;
+$this->params['breadcrumbs'][] = ['label' => 'Subjects', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="faculty-view">
+<div class="subjects-view">
 
     <div class="row">
         <div class="col-sm-9">
-            <h2><?= 'Faculty'.' '. Html::encode($this->title) ?></h2>
+            <h2><?= 'Subjects'.' '. Html::encode($this->title) ?></h2>
         </div>
-        <div class="col-sm-6" style="margin-top: 15px">
+        <div class="col-sm-3" style="margin-top: 15px">
             
-			<?= Html::a('Add Another Faculty', ['create'], ['class' => 'btn btn-success']) ?>
-            <?= Html::a('Update', ['update', 'id' => $model->fac_id], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a('Delete', ['delete', 'id' => $model->fac_id], [
+            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Delete', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => 'Are you sure you want to delete this item?',
@@ -35,16 +34,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
 <?php 
     $gridColumn = [
-        'fac_id',
-        'fac_name',
         [
-            'attribute' => 'uni.university_name',
-            'label' => 'Uni',
+            'attribute' => 'university.university_name',
+            'label' => 'University',
         ],
         [
-            'attribute' => 'course.course_name',
+            'attribute' => 'course.course_short_name',
             'label' => 'Course',
         ],
+		[
+            'attribute' => 'course.course_batch',
+            'label' => 'Batch',
+        ],
+        'sem',
+        'sub_name',
 		[
             'attribute' => 'course.vertical',
             'label' => 'Vertical',

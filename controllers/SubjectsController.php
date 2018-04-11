@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Subjects;
+use app\models\Faculty;
+use app\models\FacultyMap;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -93,6 +95,25 @@ class SubjectsController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+	
+	public function actionAssign($id)
+    {
+        $model = new FacultyMap();
+		$model->sub_id = $id;
+		$university = Subjects::find('university_id')->where(['id' => $id])->one();
+		$course = Subjects::find('course_id')->where(['id' => $id])->one();
+		$faculties = Faculty::find()->where(['uni_id' => $university['university_id'], 'course_id' => $course['course_id']])->all();
+		
+        
+            return $this->render('assign', [
+                'model' => $model,
+				'faculties' => $faculties,
+				'course' => $course,
+				'university' => $university,
+            ]);
+        
+		
     }
 
     /**

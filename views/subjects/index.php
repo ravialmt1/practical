@@ -56,11 +56,10 @@ $this->registerJs($search);
         [
             'class' => 'yii\grid\ActionColumn',
         ],
-		'sem',
-        [
-            'header' => 'Button',
+		        [
+            'header' => 'Assign Subject',
             'content' => function($model) {
-                return Html::a('Click me', ['site/index'], ['class' => 'btn btn-success btn-xs', 'data-pjax' => 0]);
+                return Html::a('Assign Faculty', ['/subjects/assign', 'id' => $model->id], ['class' => 'btn btn-success btn-xs', 'data-pjax' => 0]);
         
             }           
 ],
