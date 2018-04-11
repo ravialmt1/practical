@@ -1,91 +1,101 @@
 <?php
 
-use yii\helpers\Html;
-use yii\grid\GridView;
-use app\models\Course;
-use app\models\Subjects;
-use yii\data\ActiveDataProvider;
-use yii\bootstrap\Button;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\SubjectsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+
+use yii\helpers\Html;
+use kartik\export\ExportMenu;
+use kartik\grid\GridView;
 
 $this->title = 'Subjects';
 $this->params['breadcrumbs'][] = $this->title;
+$search = "$('.search-button').click(function(){
+	$('.search-form').toggle(1000);
+	return false;
+});";
+$this->registerJs($search);
 ?>
 <div class="subjects-index">
 
-    
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <h1><?= Html::encode($this->title) ?></h1>
 
-    
-
-    <?php //print_r($dataProvider->getModels()[0]['sub_name']); 
-	$ao_list = array();
-$ao_list["jlu_ao"] = 32;
-$ao_list["sup_user"] = 1;
-	$query = Course::find()->where(['uni_id'=>32,]);
-	$provider = new ActiveDataProvider([
-    'query' => $query,
-]);
-	$posts = $provider->getModels();
-	foreach($provider ->getModels() as $posts)
-	{
-		$course_n = $posts->course_name ;
-		$course_n = preg_replace("/[^a-zA-Z0-9\s\-]/", "", $course_n);
-		$course_id = $posts->course_id ;
-		?>
-		
-		<div class="panel panel-success">
-		
-  <div class="panel-heading"><?php echo $posts->course_name ; ?></div>
-  
-    <div class="panel-body">
- 
-<h2>Select Any Semester to Proceed Further</h2>
-	<?php 
-	
-	$query = Subjects::find()->select('sem')->where(['course'=>$posts->course_id,])->distinct();
-	$provider1 = new ActiveDataProvider([
-    'query' => $query,
-]);
-	$posts = $provider1->getModels();
-	$sem_count = 10;
-	for($sem=1;$sem<=$sem_count;$sem++)
-	
-	{
-	//$course = new course();
-	
-	//echo "Semester".$subject_model->sem. "  "; 
-	//$a = '/subjects/class?uni_id='.$ao_list[Yii::$app->user->identity->username].'&sem='. $subject_model->sem.'&course='. $course_n ;
-	//echo $a;
-	?>
-	<?= Html::a('Semester - '.$sem, ['/subjects/class?uni_id='.$ao_list[Yii::$app->user->identity->username].'&sem='. $sem.'&course='. $course_n.'&course_id='. $course_id,], ['class'=>'btn btn-primary grid-button']) ?>
-	<?php //echo ['label' => 'Faculty', 'url' => ['/faculty/create?CourseSearch[uni_id]='.$ao_list[Yii::$app->user->identity->username]]];
-	}
-	
-	?>
-	</div> </div>
-	<?php
-	}
-	?>
-	
-	
-	 
-	 <?php  /*GridView::widget([
-        'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'sub_id',
-			'faculty_id',
-            'sub_name',
-            'university_id',
-            'course',
-            'sem',
-
-            ['class' => 'yii\grid\ActionColumn'],
+    <p>
+        <?= Html::a('Create Subjects', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+<?php 
+    $gridColumn = [
+        ['class' => 'yii\grid\SerialColumn'],
+        [
+                'attribute' => 'university_id',
+                'label' => 'University',
+                'value' => function($model){                   
+                    return $model->university->university_name;                   
+                },
+                'filterType' => GridView::FILTER_SELECT2,
+                'filter' => \yii\helpers\ArrayHelper::map(\app\models\University::find()->asArray()->all(), 'uni_id', 'uni_id'),
+                'filterWidgetOptions' => [
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'filterInputOptions' => ['placeholder' => 'University', 'id' => 'grid--university_id']
+            ],
+        [
+                'attribute' => 'course_id',
+                'label' => 'Course',
+                'value' => function($model){                   
+                    return $model->course->course_name;                   
+                },
+                'filterType' => GridView::FILTER_SELECT2,
+                'filter' => \yii\helpers\ArrayHelper::map(\app\models\Course::find()->asArray()->all(), 'course_id', 'course_id'),
+                'filterWidgetOptions' => [
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'filterInputOptions' => ['placeholder' => 'Course', 'id' => 'grid--course_id']
+            ],
+        'sem',
+        'sub_name',
+        [
+            'class' => 'yii\grid\ActionColumn',
         ],
-    ]); */ ?> 
+		'sem',
+        [
+            'header' => 'Button',
+            'content' => function($model) {
+                return Html::a('Click me', ['site/index'], ['class' => 'btn btn-success btn-xs', 'data-pjax' => 0]);
+        
+            }           
+],
+    ]; 
+    ?>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => $gridColumn,
+        'pjax' => true,
+        'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-subjects']],
+        'panel' => [
+            'type' => GridView::TYPE_PRIMARY,
+            'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
+        ],
+        'export' => false,
+        // your toolbar can include the additional full export menu
+        'toolbar' => [
+            '{export}',
+            ExportMenu::widget([
+                'dataProvider' => $dataProvider,
+                'columns' => $gridColumn,
+                'target' => ExportMenu::TARGET_BLANK,
+                'fontAwesome' => true,
+                'dropdownOptions' => [
+                    'label' => 'Full',
+                    'class' => 'btn btn-default',
+                    'itemsBefore' => [
+                        '<li class="dropdown-header">Export All Data</li>',
+                    ],
+                ],
+                'exportConfig' => [
+                    ExportMenu::FORMAT_PDF => false
+                ]
+            ]) ,
+        ],
+    ]); ?>
+
 </div>
