@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "23f7216a8a21be9a73f93143d4a94d08",
+    "content-hash": "1907eb063e8081925355def9c7734c85",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -2718,6 +2718,50 @@
             "time": "2014-11-09T19:54:17+00:00"
         },
         {
+            "name": "loveorigami/yii2-modal-ajax",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/loveorigami/yii2-modal-ajax.git",
+                "reference": "e5978ff149060a4187d7eb74841983cb81c03e55"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/loveorigami/yii2-modal-ajax/zipball/e5978ff149060a4187d7eb74841983cb81c03e55",
+                "reference": "e5978ff149060a4187d7eb74841983cb81c03e55",
+                "shasum": ""
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "lo\\widgets\\modal\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Karnbrock Gmbh",
+                    "homepage": "http://karnbrock.biz"
+                },
+                {
+                    "name": "Lukyanov Andrey",
+                    "homepage": "http://loveorigami.info"
+                }
+            ],
+            "description": "A wrapper around Yii2 Bootstrap Modal for using an ActiveForm via AJAX inside",
+            "homepage": "https://github.com/loveorigami/yii2-modal-ajax",
+            "keywords": [
+                "ajax-modal",
+                "bootstrap",
+                "modal",
+                "yii2"
+            ],
+            "time": "2018-03-13T11:17:24+00:00"
+        },
+        {
             "name": "miloschuman/yii2-highcharts-widget",
             "version": "dev-master",
             "source": {
@@ -4656,7 +4700,8 @@
         "ramosisw/yii2-material-dashboard": 20,
         "mootensai/yii2-enhanced-gii": 20,
         "kartik-v/yii2-tree-manager": 20,
-        "kartik-v/yii2-datecontrol": 20
+        "kartik-v/yii2-datecontrol": 20,
+        "loveorigami/yii2-modal-ajax": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

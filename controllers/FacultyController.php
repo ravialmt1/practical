@@ -137,7 +137,7 @@ class FacultyController extends Controller
     */
     public function actionCourseSel() {
     $out = [];
-	$_POST['depdrop_parents'] = [2];
+	//$_POST['depdrop_parents'] = [2];
     if (isset($_POST['depdrop_parents'])) {
         $id = end($_POST['depdrop_parents']);
         $list = Course::find()->andWhere(['uni_id'=>$id])->asArray()->all();
