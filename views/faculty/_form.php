@@ -50,14 +50,7 @@ use yii\helpers\Url;
 	
 	
 
-    <?= $form->field($model, 'course_id')->widget(\kartik\widgets\Select2::classname(), [
-        'data' => \yii\helpers\ArrayHelper::map(\app\models\Course::find()->orderBy('course_id')->asArray()->all(), 'course_id', 'course_name'),
-        'options' => ['placeholder' => 'Choose Course'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]); ?>
-
+    
     
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

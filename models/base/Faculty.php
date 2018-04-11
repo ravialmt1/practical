@@ -101,7 +101,7 @@ class Faculty extends \yii\db\ActiveRecord
         return [
             'uuid' => [
                 'class' => UUIDBehavior::className(),
-                'column' => 'id',
+                'column' => 'fac_id',
             ],
         ];
     }
