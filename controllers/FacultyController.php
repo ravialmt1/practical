@@ -4,39 +4,25 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Faculty;
-use app\models\FacultySearch;
+use app\models\Course;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\helpers\Url;
+use yii\helpers\Json;
 /**
  * FacultyController implements the CRUD actions for Faculty model.
  */
 class FacultyController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    		
-		public function behaviors()
+    public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-        
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['post'],
                 ],
             ],
         ];
@@ -48,11 +34,11 @@ class FacultyController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new FacultySearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Faculty::find(),
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -64,8 +50,13 @@ class FacultyController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $providerAttendance = new \yii\data\ArrayDataProvider([
+            'allModels' => $model->attendances,
+        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'providerAttendance' => $providerAttendance,
         ]);
     }
 
@@ -78,7 +69,7 @@ class FacultyController extends Controller
     {
         $model = new Faculty();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
             return $this->redirect(['view', 'id' => $model->fac_id]);
         } else {
             return $this->render('create', [
@@ -97,7 +88,7 @@ class FacultyController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
             return $this->redirect(['view', 'id' => $model->fac_id]);
         } else {
             return $this->render('update', [
@@ -114,11 +105,12 @@ class FacultyController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($id)->deleteWithRelated();
 
         return $this->redirect(['index']);
     }
 
+    
     /**
      * Finds the Faculty model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -134,4 +126,35 @@ class FacultyController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    /**
+    * Action to load a tabular form grid
+    * for Attendance
+    * @author Yohanes Candrajaya <moo.tensai@gmail.com>
+    * @author Jiwantoro Ndaru <jiwanndaru@gmail.com>
+    *
+    * @return mixed
+    */
+    public function actionCourseSel() {
+    $out = [];
+	$_POST['depdrop_parents'] = [2];
+    if (isset($_POST['depdrop_parents'])) {
+        $id = end($_POST['depdrop_parents']);
+        $list = Course::find()->andWhere(['uni_id'=>$id])->asArray()->all();
+        $selected  = null;
+        if ($id != null && count($list) > 0) {
+            $selected = '';
+            foreach ($list as $i => $account) {
+                $out[] = ['id' => $account['course_id'], 'name' => $account['course_name']];
+                if ($i == 0) {
+                    $selected = $account['course_id'];
+                }
+            }
+            // Shows how you can preselect a value
+            echo Json::encode(['output' => $out, 'selected'=>$selected]);
+            return;
+        }
+    }
+    echo Json::encode(['output' => '', 'selected'=>'']);
+}
 }

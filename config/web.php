@@ -83,9 +83,9 @@ $config = [
             'class' => 'app\modules\students\students',
 			],
 			
-	 'faculty' => [
+	 /* 'faculty' => [
 					'class' => 'app\modules\faculty\attendance',
-			       ],
+			       ], */
 	'timetable' => [
 					'class' => 'app\modules\timetable\timetable',
 					],	

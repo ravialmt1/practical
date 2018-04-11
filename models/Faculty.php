@@ -3,43 +3,24 @@
 namespace app\models;
 
 use Yii;
+use \app\models\base\Faculty as BaseFaculty;
 
 /**
  * This is the model class for table "faculty".
- *
- * @property int $fac_id
- * @property string $fac_name
  */
-class Faculty extends \yii\db\ActiveRecord
+class Faculty extends BaseFaculty
 {
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return 'faculty';
-    }
-
     /**
      * @inheritdoc
      */
     public function rules()
     {
-        return [
-            [['fac_name'], 'required'],
-			[['uni_id'],'required'],
-            [['fac_name'], 'string', 'max' => 100],
-        ];
+        return array_replace_recursive(parent::rules(),
+	    [
+            [['fac_name', 'uni_id', 'course_id'], 'required'],
+            [['uni_id', 'course_id'], 'integer'],
+            [['fac_name'], 'string', 'max' => 100]
+        ]);
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'fac_id' => 'Fac ID',
-            'fac_name' => 'Fac Name',
-        ];
-    }
+	
 }

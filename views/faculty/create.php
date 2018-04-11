@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Faculty */
 
 $this->title = 'Create Faculty';
-$this->params['breadcrumbs'][] = ['label' => 'Faculties', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Faculty', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="faculty-create">
