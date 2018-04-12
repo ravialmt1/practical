@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Students;
-use app\models\StudentsSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,16 +14,13 @@ use yii\filters\VerbFilter;
  */
 class StudentsController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
     public function behaviors()
     {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['post'],
                 ],
             ],
         ];
@@ -35,11 +32,11 @@ class StudentsController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new StudentsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Students::find(),
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -51,8 +48,25 @@ class StudentsController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $providerAttendance = new \yii\data\ArrayDataProvider([
+            'allModels' => $model->attendances,
+        ]);
+        $providerSection = new \yii\data\ArrayDataProvider([
+            'allModels' => $model->sections,
+        ]);
+        $providerStudentsAcademic = new \yii\data\ArrayDataProvider([
+            'allModels' => $model->studentsAcademics,
+        ]);
+        $providerStudentsPersonal = new \yii\data\ArrayDataProvider([
+            'allModels' => $model->studentsPersonals,
+        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'providerAttendance' => $providerAttendance,
+            'providerSection' => $providerSection,
+            'providerStudentsAcademic' => $providerStudentsAcademic,
+            'providerStudentsPersonal' => $providerStudentsPersonal,
         ]);
     }
 
@@ -64,39 +78,12 @@ class StudentsController extends Controller
     public function actionCreate()
     {
         $model = new Students();
-		$searchModel = new StudentsSearch();
-		
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		
-		$session = Yii::$app->session;
-		$sem = $session->get('sem');
-		$course_id = $session->get('course_id');
-		$uni_id = $session->get('uni_id');
-		$course_name = $session->get('course');
-		$dataProvider->query->where([
-        //... other searched attributes here
-		'student_clas' => $sem,
-		'uni_id' => $uni_id,
-    ]);
-		$model ->student_clas =$sem;
-		$model->course_id = $course_id;
-		$model->uni_id = $uni_id;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			$session->setFlash('success', 'Student  <strong>'.$model->first_name .' '.$model->last_name.'</strong> added successfully.');
-           return $this->render('create', [
-                'model' => $model,
-				 'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-			'student_clas' => $sem,
-			'uni_id' => $uni_id,
-            ]);
+
+        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-				 'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-			'student_clas' => $sem,
-			'uni_id' => $uni_id,
             ]);
         }
     }
@@ -109,38 +96,13 @@ class StudentsController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findmodel($id);
-		
-$searchModel = new StudentsSearch();
-		
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		$session = Yii::$app->session;
-		$sem = $session->get('sem');
-		$course_id = $session->get('course_id');
-		$uni_id = $session->get('uni_id');
-		$course_name = $session->get('course');
-		$dataProvider->query->where([
-        //... other searched attributes here
-		'student_clas' => $sem,
-		'uni_id' => $uni_id,
-    ]);
+        $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->render('index', [
-                'model' => $model,
-				 'dataProvider' => $dataProvider,
-				  'searchModel' => $searchModel,
-			'student_clas' => $sem,
-			'uni_id' => $uni_id,
-            ]);
+        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
-			$model = $this->findmodel($id);
             return $this->render('update', [
                 'model' => $model,
-				 'dataProvider' => $dataProvider,
-				  'searchModel' => $searchModel,
-			'student_clas' => $sem,
-			'uni_id' => $uni_id,
             ]);
         }
     }
@@ -153,30 +115,12 @@ $searchModel = new StudentsSearch();
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-		 $model = new Students();
-$searchModel = new StudentsSearch();
-		
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		$session = Yii::$app->session;
-		$sem = $session->get('sem');
-		$course_id = $session->get('course_id');
-		$uni_id = $session->get('uni_id');
-		$course_name = $session->get('course');
-		$dataProvider->query->where([
-        //... other searched attributes here
-		'student_clas' => $sem,
-		'uni_id' => $uni_id,
-    ]);
-        return $this->render('create', [
-                'model' => $model,
-				 'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-			'student_clas' => $sem,
-			'uni_id' => $uni_id,
-            ]);
+        $this->findModel($id)->deleteWithRelated();
+
+        return $this->redirect(['index']);
     }
 
+    
     /**
      * Finds the Students model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -188,6 +132,86 @@ $searchModel = new StudentsSearch();
     {
         if (($model = Students::findOne($id)) !== null) {
             return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    
+    /**
+    * Action to load a tabular form grid
+    * for Attendance
+    * @author Yohanes Candrajaya <moo.tensai@gmail.com>
+    * @author Jiwantoro Ndaru <jiwanndaru@gmail.com>
+    *
+    * @return mixed
+    */
+    public function actionAddAttendance()
+    {
+        if (Yii::$app->request->isAjax) {
+            $row = Yii::$app->request->post('Attendance');
+            if((Yii::$app->request->post('isNewRecord') && Yii::$app->request->post('_action') == 'load' && empty($row)) || Yii::$app->request->post('_action') == 'add')
+                $row[] = [];
+            return $this->renderAjax('_formAttendance', ['row' => $row]);
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    
+    /**
+    * Action to load a tabular form grid
+    * for Section
+    * @author Yohanes Candrajaya <moo.tensai@gmail.com>
+    * @author Jiwantoro Ndaru <jiwanndaru@gmail.com>
+    *
+    * @return mixed
+    */
+    public function actionAddSection()
+    {
+        if (Yii::$app->request->isAjax) {
+            $row = Yii::$app->request->post('Section');
+            if((Yii::$app->request->post('isNewRecord') && Yii::$app->request->post('_action') == 'load' && empty($row)) || Yii::$app->request->post('_action') == 'add')
+                $row[] = [];
+            return $this->renderAjax('_formSection', ['row' => $row]);
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    
+    /**
+    * Action to load a tabular form grid
+    * for StudentsAcademic
+    * @author Yohanes Candrajaya <moo.tensai@gmail.com>
+    * @author Jiwantoro Ndaru <jiwanndaru@gmail.com>
+    *
+    * @return mixed
+    */
+    public function actionAddStudentsAcademic()
+    {
+        if (Yii::$app->request->isAjax) {
+            $row = Yii::$app->request->post('StudentsAcademic');
+            if((Yii::$app->request->post('isNewRecord') && Yii::$app->request->post('_action') == 'load' && empty($row)) || Yii::$app->request->post('_action') == 'add')
+                $row[] = [];
+            return $this->renderAjax('_formStudentsAcademic', ['row' => $row]);
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    
+    /**
+    * Action to load a tabular form grid
+    * for StudentsPersonal
+    * @author Yohanes Candrajaya <moo.tensai@gmail.com>
+    * @author Jiwantoro Ndaru <jiwanndaru@gmail.com>
+    *
+    * @return mixed
+    */
+    public function actionAddStudentsPersonal()
+    {
+        if (Yii::$app->request->isAjax) {
+            $row = Yii::$app->request->post('StudentsPersonal');
+            if((Yii::$app->request->post('isNewRecord') && Yii::$app->request->post('_action') == 'load' && empty($row)) || Yii::$app->request->post('_action') == 'add')
+                $row[] = [];
+            return $this->renderAjax('_formStudentsPersonal', ['row' => $row]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

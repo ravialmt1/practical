@@ -79,9 +79,9 @@ $config = [
     ],
 	
 	
-	'students' => [
+	/* 'students' => [
             'class' => 'app\modules\students\students',
-			],
+			], */
 			
 	 /* 'faculty' => [
 					'class' => 'app\modules\faculty\attendance',
