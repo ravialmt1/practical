@@ -34,7 +34,7 @@
         "kartik-v/yii2-widget-depdrop": "@dev",
         "dektrium/yii2-user": "^0.9.0@dev",
         "kartik-v/yii2-tabs-x": "*",
-        "wbraganca/yii2-dynamicform": "dev-master",
+        "wbraganca/yii2-dynamicform": "*",
         "kartik-v/yii2-grid": "@dev",
         "moonlandsoft/yii2-phpexcel": "*",
         "arogachev/yii2-excel": "dev-master",
@@ -48,7 +48,15 @@
         "kartik-v/yii2-tree-manager": "dev-master",
         "yiisoft/yii2-jui": " ~2.0.0",
         "kartik-v/yii2-datecontrol": "^1.9@dev",
-        "loveorigami/yii2-modal-ajax": "@dev"
+        "loveorigami/yii2-modal-ajax": "@dev",
+        "codeception/codeception": "2.4.x-dev",
+        "codeception/specify": "^0.4.6",
+        "codeception/verify": "^0.4.0",
+        "kartik-v/yii2-export": "@dev",
+        "dektrium/yii2-rbac": "1.0.0-alpha@dev",
+        "2amigos/yii2-ckeditor-widget": "^1.0@dev",
+        "2amigos/yii2-table-export-widget": "*",
+        "kartik-v/yii2-checkbox-x": "dev-master"
         
     },
     "require-dev": {

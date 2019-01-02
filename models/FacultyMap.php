@@ -42,8 +42,8 @@ class FacultyMap extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'fac_id' => 'Fac ID',
-            'sub_id' => 'Sub ID',
+            'fac_id' => 'Faculty',
+            'sub_id' => 'Subject',
         ];
     }
 

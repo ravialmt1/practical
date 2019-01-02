@@ -12,7 +12,7 @@ $config = [
 	'view' => [
          'theme' => [
              'pathMap' => [
-                '@app/views' => '@app/views/app'
+                '@app/views' => '@app/views/themes/preadmin/orange'
              ],
          ],
     ],
@@ -61,11 +61,15 @@ $config = [
                 ],
             ],
         ],
+		 'authManager' => [
+        'class' => 'dektrium\rbac\components\DbManager',
+    ],
         'db' => require(__DIR__ . '/db.php'),
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
         ],
+		
     ],
 	
 	
@@ -79,16 +83,16 @@ $config = [
     ],
 	
 	
-	/* 'students' => [
+/* 	'students' => [
             'class' => 'app\modules\students\students',
 			], */
 			
 	 /* 'faculty' => [
 					'class' => 'app\modules\faculty\attendance',
 			       ], */
-	'timetable' => [
+	/*  'timetable' => [
 					'class' => 'app\modules\timetable\timetable',
-					],	
+					], 	 */
 	'gridview' => [
             'class' => 'kartik\grid\Module',
         ],
@@ -138,8 +142,14 @@ $config = [
 	'enableConfirmation' => true,
     'confirmWithin' => 21600,
     'cost' => 12,
-    'admins' => ['admin']
+    'admins' => ['sup_user','MD']
 ],
+ 
+         'rbac' => 'dektrium\rbac\RbacWebModule',
+		 'controllerMap' => [
+                            'role' =>'app\controllers\RoleController',
+                        ]
+    
 	],
 	
     'params' => $params,

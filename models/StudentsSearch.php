@@ -41,12 +41,13 @@ class StudentsSearch extends Students
      */
     public function search($params)
     {
-        $query = Students::find();
+         'query' => Students::find()->where(['course_id'=>$get_val['course_id'],'semester' => $get_val['semester'],'section' => $get_val['section']]);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+			'pagination' => [ 'pageSize' => 10 ],
         ]);
 
         $this->load($params);

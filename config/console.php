@@ -36,6 +36,11 @@ $config = [
         ],
         'db' => $db,
     ],
+	'modules' => [
+    
+    'rbac' => 'dektrium\rbac\RbacConsoleModule',
+    
+],
 	
 	
     'params' => $params,

@@ -17,9 +17,9 @@ class Subjects extends BaseSubjects
     {
         return array_replace_recursive(parent::rules(),
 	    [
-            [['university_id', 'course_id', 'sem', 'sub_name'], 'required'],
-            [['university_id', 'course_id', 'sem'], 'integer'],
-            [['sub_name'], 'string', 'max' => 100]
+            [['university_id', 'course_id', 'sem', 'sub_name','section'], 'required'],
+            [['university_id', 'course_id', 'sem','elective_group'], 'integer'],
+            [['sub_name','section'], 'string', 'max' => 100]
         ]);
     }
 	

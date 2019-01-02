@@ -7,11 +7,15 @@ use app\models\LoginForm;
 use app\models\FeedbackStudents;
 use Yii;
 use yii\filters\AccessControl;
+use app\models\Course;
+use app\models\Students;
+//use app\models\Students;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\helpers\url;
 use yii\helpers\html;
 use yii\web\UrlManager;
+
 
 class SiteController extends Controller
 {
@@ -29,6 +33,10 @@ class SiteController extends Controller
                         'allow' => false,
                         'roles' => ['?'],
                     ],
+					
+					
+					
+					
                     [
                         'actions' => ['logout'],
                         'allow' => true,
@@ -60,7 +68,56 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+		if(Yii::$app->user->isGuest) { 
+        return $this->redirect('user/login');
+		}
+		else
+		{
+			$uid = Yii::$app->user->identity->id;
+			$query =(new \yii\db\Query)->select('user_university')->from('user_university')->where(['user_name' => $uid])->limit(1);
+		$university_id = $query->One();
+		$session = Yii::$app->session;
+		$session->set('uni_id', $university_id);
+		 if($university_id['user_university']!='11111111'){
+		$courses = Course::find()->where(['uni_id'=> $university_id])->count();
+		$students = Students::find()->where(['uni_id'=> $university_id])->count();
+		return $this->render('index', [
+            'courses' => $courses,
+			'students' => $students,
+			'university_id' => $university_id,
+			'query'=> "100",
+					
+        ]);
+		 }
+		 else
+		 {
+			$courses = Course::find()->count();
+		$students = Students::find()->count(); 
+		
+		 
+		return $this->render('corporate/index', [
+            'courses' => $courses,
+			'students' => $students,
+			'university_id' => $university_id,
+			'query'=> "100",
+					
+        ]);
+		}
+		}
+		
+    }
+	
+	public function actionVertical()
+    {
+        return $this->render('vertical');
+    }
+	public function actionCompose()
+    {
+        return $this->render('compose');
+    }
+	public function actionCourse()
+    {
+        return $this->render('course');
     }
 
     public function actionLogin()

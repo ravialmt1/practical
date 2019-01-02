@@ -17,9 +17,9 @@ class Faculty extends BaseFaculty
     {
         return array_replace_recursive(parent::rules(),
 	    [
-            [['fac_name', 'uni_id', 'course_id'], 'required'],
-            [['uni_id', 'course_id'], 'integer'],
-            [['fac_name'], 'string', 'max' => 100]
+            [['fac_name', 'uni_id', 'vertical'], 'required'],
+            [['uni_id'], 'integer'],
+            [['fac_name','vertical'], 'string', 'max' => 100]
         ]);
     }
 	

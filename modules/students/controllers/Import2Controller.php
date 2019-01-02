@@ -10,6 +10,8 @@ use app\modules\students\models\Students;
 use app\modules\students\models\StudentDetails;
 use app\modules\students\models\University;
 use app\modules\students\models\Course;
+use app\models\Classes;
+use app\models\Studentsclass;
 use app\models\FeedbackcourseMatrixSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -139,6 +141,7 @@ else
 	$model = new University();	
 	
 	endif;
+	$model->uni_id = $model->getPrimaryKey();	
 	$model ->university_name = "$unive";
 //echo "$unive";	
 $model ->save();		
@@ -149,8 +152,8 @@ print '<pre>';
 		if(!$university_course) :
 		$university_course = new Course;
 		endif;
-		
-		
+		//$newId = university_course::find()->max('id') + 1;
+	$university_course->course_id = $university_course->getPrimaryKey();	
 	$university_course ->uni_id = $model->uni_id;
 	$university_course ->vertical = $vertical;
 	$university_course -> course_name = $course_name;
@@ -158,11 +161,43 @@ print '<pre>';
 	$university_course -> course_batch = "$batch";
 
 $university_course ->save();
+
+////////////////////Saving the Classes Details////////////////////////////
+///////////////////////-----------------------/////////////////////////////
+//////////////////////------------------------/////////////////////////////
+
+$university_classes = Classes::find()->where(['course_id'=> $university_course ->course_id, 'sem' => $semester,'section' => 'A'])->one(); 
+		if(!$university_classes) :
+		$university_classes = new Classes;
+		endif;
+		//$newId = Classes::find()->max('id') + 1;
+		//ALTER TABLE `classes` auto_increment = 88;
+		$university_classes ->refresh();
+		$university_classes->id = $university_classes->getPrimaryKey();
+		
+   // $university_classes->id=$newId;
+		
+	//$university_classes->setPrimaryKey($newId);
+	//echo "Classes ID". $university_classes->id ."Is htis<br />";
+	$university_classes -> course_id = $university_course ->course_id;
+	$university_classes -> sem = $semester;
+	$university_classes -> section = "A";
+
+$university_classes ->save();
+
+
+
+
+////////////////////Saving the Students Details////////////////////////////
+///////////////////////-----------------------/////////////////////////////
+//////////////////////------------------------/////////////////////////////
 $students = Students::find()->where(['course_id' => $university_course->course_id,'stu_name' => $stu_name])->one(); 
 		if(!$students) :
 		$students = new Students();
 		endif;
 //$students = new Students();
+$students->uni_id = $model->uni_id;
+$students->id = $students->getPrimaryKey();
 $students -> course_id = $university_course->course_id;
 $students ->stu_name = "$stu_name";
 $students ->reg_no = "$reg_nu";
@@ -192,6 +227,23 @@ else
 	echo "not saved";
 print_r($students->getErrors());
 }
+
+////////////////////Assigning Classes to Students////////////////////////////
+///////////////////////-----------------------/////////////////////////////
+//////////////////////------------------------/////////////////////////////
+
+/* $students_class = Studentsclass::find()->where(['student_id'=> $students ->id, 'class_id' => $university_classes->id])->one(); 
+		if(!$students_class) :
+		$students_class = new Studentsclass;
+		endif;
+		
+		
+	
+	$students_class ->student_id =  $students ->id;
+	$students_class -> class_id = $university_classes->id;
+	
+
+$students_class ->save(); */
 
 echo " <BR /> ".$students ->stu_name;	
 

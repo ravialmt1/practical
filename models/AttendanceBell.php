@@ -19,7 +19,8 @@ class AttendanceBell extends BaseAttendanceBell
 	    [
             [['university_id', 'course_id', 'time_start', 'time_end'], 'required'],
             [['university_id', 'course_id'], 'integer'],
-            [['time_start', 'time_end'], 'string', 'max' => 100]
+            [['time_start', 'time_end'], 'string', 'max' => 100],
+			[['bellTime'], 'safe'],
         ]);
     }
 	

@@ -18,7 +18,7 @@ class Events extends BaseEvents
         return array_replace_recursive(parent::rules(),
 	    [
             [['title', 'description'], 'required'],
-            [['created_at'], 'safe'],
+            [['created_at'], 'required'],
             [['title', 'created_by'], 'string', 'max' => 100],
             [['description'], 'string', 'max' => 200]
         ]);

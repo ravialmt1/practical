@@ -68,12 +68,15 @@ class FacultyController extends Controller
     public function actionCreate()
     {
         $model = new Faculty();
-
+		 $session = Yii::$app->session;
+		$university_id = $session->get('uni_id');
+		$university_id = $university_id['user_university'];
         if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
             return $this->redirect(['view', 'id' => $model->fac_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+				'university_id' => $university_id,
             ]);
         }
     }
@@ -140,14 +143,14 @@ class FacultyController extends Controller
 	//$_POST['depdrop_parents'] = [2];
     if (isset($_POST['depdrop_parents'])) {
         $id = end($_POST['depdrop_parents']);
-        $list = Course::find()->andWhere(['uni_id'=>$id])->asArray()->all();
-        $selected  = null;
+        $list = Course::find()->select('vertical')->Where(['uni_id'=>$id])->asArray()->distinct()->all();
+        $selected  = 'vertical';
         if ($id != null && count($list) > 0) {
             $selected = '';
             foreach ($list as $i => $account) {
-                $out[] = ['id' => $account['course_id'], 'name' => $account['course_name']];
+                $out[] = ['id' => $account['vertical'], 'name' => $account['vertical']];
                 if ($i == 0) {
-                    $selected = $account['course_id'];
+                    $selected = $account['vertical'];
                 }
             }
             // Shows how you can preselect a value

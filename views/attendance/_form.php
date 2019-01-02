@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use kartik\depdrop\DepDrop;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Attendance */
@@ -9,68 +11,102 @@ use yii\bootstrap\ActiveForm;
 
 ?>
 
-<div class="attendance-form">
+<div class="classes-form">
 
-    <?php $form = ActiveForm::begin(['layout' => 'inline',]); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->errorSummary($model); ?>
-
-    <?= $form->field($model, 'id')->textInput(['placeholder' => 'Id']) ?>
-
-    <?= $form->field($model, 'student_id')->widget(\kartik\widgets\Select2::classname(), [
-        'data' => \yii\helpers\ArrayHelper::map(\app\models\Students::find()->orderBy('id')->asArray()->all(), 'id', 'id'),
-        'options' => ['placeholder' => 'Choose Students'],
+	
+	<div class="row">
+		<div class="col-md-4">
+		
+    <?= $form->field($model, 'uni_id')->widget(\kartik\widgets\Select2::classname(), [
+        'data' => \yii\helpers\ArrayHelper::map(\app\models\University::find()->orderBy('uni_id')->asArray()->all(), 'uni_id', 'university_name'),
+        'options' => ['placeholder' => 'Choose University'],
         'pluginOptions' => [
             'allowClear' => true
         ],
     ]); ?>
+</div>
+		<div class="col-md-4">
+		
+    <?=  $form->field($model, 'vertical')->widget(DepDrop::classname(), [
+	'data'=>[1 => 'Vertical'],
+    //'data' => \yii\helpers\ArrayHelper::map(\app\models\Course::find()->orderBy('course_id')->asArray()->all(), 'course_id', 'course_name'),
+        'options' => ['placeholder' => 'Choose Vertical'],
+    'type' => DepDrop::TYPE_SELECT2,
+    'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+    'pluginOptions'=>[
+        'depends'=>['section-uni_id-container'],
+        'url' => Url::to(['/attendance/vertical-sel']),
+        'loadingText' => 'vertical ...',
+    ]
+]); ?>
 
-    <?= $form->field($model, 'teacher_id')->widget(\kartik\widgets\Select2::classname(), [
-        'data' => \yii\helpers\ArrayHelper::map(\app\models\Faculty::find()->orderBy('fac_id')->asArray()->all(), 'fac_id', 'fac_id'),
-        'options' => ['placeholder' => 'Choose Faculty'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]); ?>
-
-    <?= $form->field($model, 'section_id')->widget(\kartik\widgets\Select2::classname(), [
-        'data' => \yii\helpers\ArrayHelper::map(\app\models\Section::find()->orderBy('id')->asArray()->all(), 'id', 'section'),
-        'options' => ['placeholder' => 'Choose Section'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]); ?>
-
-    <?= $form->field($model, 'subject_id')->widget(\kartik\widgets\Select2::classname(), [
-        'data' => \yii\helpers\ArrayHelper::map(\app\models\Subjects::find()->orderBy('id')->asArray()->all(), 'id', 'id'),
-        'options' => ['placeholder' => 'Choose Subjects'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]); ?>
-
-    <?= $form->field($model, 'att_date')->widget(\kartik\widgets\DatePicker::classname(), [
+ 
+</div>
+<div class ="col-md-4">
+ <?=  $form->field($model, 'course_id')->widget(DepDrop::classname(), [
+	'data'=>[1 => 'courses'],
+    //'data' => \yii\helpers\ArrayHelper::map(\app\models\Course::find()->orderBy('course_id')->asArray()->all(), 'course_id', 'course_name'),
+        'options' => ['placeholder' => 'Choose Course'],
+    'type' => DepDrop::TYPE_SELECT2,
+    'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+    'pluginOptions'=>[
+        'depends'=>['section-uni_id','section-vertical'],
+        'url' => Url::to(['/attendance/course-sel']),
+        'loadingText' => 'course ...',
+    ]
+]); ?>
+</div>
+	</div>
+	<div class="row">
+	<div class="col-md-3">	
+	
+   <?= $form->field($model, 'sem')->textInput(['placeholder' => 'Sem']) ?>
+</div>
+<div class="col-md-3">
+    <?= $form->field($model, 'section')->textInput(['placeholder' => 'Section']) ?>
+	</div>
+	<div class ="col-md-3">
+ <?=  $form->field($model, 'subject')->widget(DepDrop::classname(), [
+	'data'=>[1 => 'subject'],
+    //'data' => \yii\helpers\ArrayHelper::map(\app\models\Course::find()->orderBy('course_id')->asArray()->all(), 'course_id', 'course_name'),
+        'options' => ['placeholder' => 'Choose Course'],
+    'type' => DepDrop::TYPE_SELECT2,
+    'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+    'pluginOptions'=>[
+        'depends'=>['section-uni_id','section-course_id','section-sem','section-section'],
+        'url' => Url::to(['/attendance/subject-sel']),
+        'loadingText' => 'course ...',
+    ]
+]); ?>
+</div>
+	
+	<div class="col-md-3">
+	<?= $form->field($model, 'att_date')->widget(\kartik\widgets\DatePicker::classname(), [
         'type' => \kartik\widgets\DatePicker::TYPE_INPUT,
 		'pluginOptions' => [
-        'format' => 'dd-M-yyyy',
+        'format' => 'yyyy-mm-dd',
 		'placeholder' => 'Choose Att Date',
+		'autoclose'=>true
 		],
         
     ]); ?>
 
-    <?= $form->field($model, 'bell_id')->widget(\kartik\widgets\Select2::classname(), [
-        'data' => \yii\helpers\ArrayHelper::map(\app\models\AttendanceBell::find()->orderBy('id')->asArray()->all(), 'id', 'id'),
-        'options' => ['placeholder' => 'Choose Attendance bell'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]); ?>
-
-    <?= $form->field($model, 'att_status')->textInput(['placeholder' => 'Att Status']) ?>
-
+	</div>
+	
+	
+		<div class="col-md-3">
+		<?= $form->field($model, 'hours')->textInput(['placeholder' => 'Class Hour']) ?>
+   
+</div>
+</div>
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Take Attendance' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
+	
+	
 
     <?php ActiveForm::end(); ?>
 

@@ -45,9 +45,7 @@ class CourseSearch extends Course
 
         // add conditions that should always apply here
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        
 
         $this->load($params);
 
@@ -63,10 +61,15 @@ class CourseSearch extends Course
             'uni_id' => $this->uni_id,
         ]);
 
-        $query->andFilterWhere(['like', 'vertical', $this->vertical])
+       /*  $query->andFilterWhere(['like', 'vertical', $this->vertical])
+			  ->andFilterWhere(['like', 'uni_id', $this->uni_id])
             ->andFilterWhere(['like', 'course_name', $this->course_name])
             ->andFilterWhere(['like', 'course_short_name', $this->course_short_name])
-            ->andFilterWhere(['like', 'course_batch', $this->course_batch]);
+            ->andFilterWhere(['like', 'course_batch', $this->course_batch]); */
+			
+			$dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
 
         return $dataProvider;
     }

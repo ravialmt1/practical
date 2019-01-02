@@ -33,7 +33,7 @@ class Events extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'description'], 'required'],
-            [['created_at'], 'safe'],
+            [['created_at'], 'required'],
             [['title', 'created_by'], 'string', 'max' => 100],
             [['description'], 'string', 'max' => 200]
         ];
@@ -66,21 +66,15 @@ class Events extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            'timestamp' => [
-                'class' => TimestampBehavior::className(),
-                'createdAtAttribute' => 'created_at',
-                'updatedAtAttribute' => false,
-                'value' => new \yii\db\Expression('NOW()'),
-            ],
-            'blameable' => [
+               'blameable' => [
                 'class' => BlameableBehavior::className(),
                 'createdByAttribute' => 'created_by',
                 'updatedByAttribute' => false,
             ],
-            'uuid' => [
+            /* 'uuid' => [
                 'class' => UUIDBehavior::className(),
                 'column' => 'id',
-            ],
+            ], */
         ];
     }
 

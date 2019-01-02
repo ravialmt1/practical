@@ -86,14 +86,14 @@ class FeedbackController extends Controller
 			 $model -> subject_id = (new Query())->select(['sub_id'])->from('subjects')->where(['sub_name' => $subject])->one();
 			 
 } */
-$sub_count = (new \yii\db\Query())->select(['sub_name'])->from('subjects')->where(['university_id' =>$uni_id, 'course' => $course,'sem' => $sem])->count();
+$sub_count = (new \yii\db\Query())->select(['sub_name'])->from('subjects')->where(['university_id' =>$uni_id, 'course_id' => $course,'sem' => $sem])->count();
 
-$rows = (new \yii\db\Query())->select(['sub_name'])->from('subjects')->where(['university_id' => $uni_id, 'course' => $course, 'sem'=>$sem])->all();
+$rows = (new \yii\db\Query())->select(['sub_name'])->from('subjects')->where(['university_id' => $uni_id, 'course_id' => $course, 'sem'=>$sem])->all();
 if ( $model->load(Yii::$app->request->post())&& $model->save()) {
         	$subject_id = $model -> subject_id;
 			$subject_id++;
 			
-			$subject = (new \yii\db\Query())->select(['sub_name'])->from('subjects')->where(['university_id' => $uni_id, 'course' => $course, 'sem'=>$sem,'sub_id' => $subject_id])->one()['sub_name'];
+			$subject = (new \yii\db\Query())->select(['sub_name'])->from('subjects')->where(['university_id' => $uni_id, 'course_id' => $course, 'sem'=>$sem,'id' => $subject_id])->one()['sub_name'];
 			$model -> subject_id = $subject_id;
 					
 			$reg_num = $model -> reg_no;
@@ -118,7 +118,7 @@ if ( $model->load(Yii::$app->request->post())&& $model->save()) {
 			//$rows = (new Query())->select(['sub_name'])->from('subjects')->where(['university_id' => $uni_id, 'course' => $course,'sem' => $sem])->all();
 			 
 			 $subject = $rows[$it-1]['sub_name'];
-			$model -> subject_id = (new Query())->select(['sub_id'])->from('subjects')->where(['sub_name' => $subject])->one()['sub_id'];
+			$model -> subject_id = (new Query())->select(['id'])->from('subjects')->where(['sub_name' => $subject])->one()['id'];
 		return $this->render('create', [
                 'model' => $model,
 				//'it' => $it,

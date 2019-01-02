@@ -17,8 +17,8 @@ class Course extends BaseCourse
     {
         return array_replace_recursive(parent::rules(),
 	    [
-            [['uni_id', 'vertical', 'course_name', 'course_short_name', 'course_batch', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at'], 'required'],
-            [['uni_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
+            [['uni_id', 'vertical', 'course_name', 'course_short_name', 'course_batch', 'course_batch_end'], 'required'],
+            [['uni_id', 'created_by', 'updated_by', 'deleted_by','course_batch_end'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['vertical', 'course_batch'], 'string', 'max' => 200],
             [['course_name'], 'string', 'max' => 110],

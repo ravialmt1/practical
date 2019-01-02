@@ -42,8 +42,8 @@ class Subjects extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['university_id', 'course_id', 'sem', 'sub_name'], 'required'],
-            [['university_id', 'course_id', 'sem'], 'integer'],
+            [['university_id', 'course_id', 'sem', 'sub_name','elective_group'], 'required'],
+            [['university_id', 'course_id', 'sem','elective_group'], 'integer'],
             [['sub_name'], 'string', 'max' => 100]
         ];
     }
@@ -66,6 +66,7 @@ class Subjects extends \yii\db\ActiveRecord
             'university_id' => 'University ID',
             'course_id' => 'Course ID',
             'sem' => 'Sem',
+			'section' => 'Section',
             'sub_name' => 'Sub Name',
         ];
     }
@@ -93,12 +94,17 @@ class Subjects extends \yii\db\ActiveRecord
     {
         return $this->hasOne(\app\models\Course::className(), ['course_id' => 'course_id']);
     }
+	
+	public function getElective()
+    {
+        return $this->hasOne(\app\models\Subjectelectivemap::className(), ['id' => 'elective_group']);
+    }
     
     /**
      * @inheritdoc
      * @return array mixed
      */
-    public function behaviors()
+    /* public function behaviors()
     {
         return [
             'uuid' => [
@@ -106,7 +112,7 @@ class Subjects extends \yii\db\ActiveRecord
                 'column' => 'id',
             ],
         ];
-    }
+    } */
 
 
     /**

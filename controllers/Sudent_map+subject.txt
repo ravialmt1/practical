@@ -1,0 +1,21 @@
+In the subject display
+put a link for assign students.
+
+if the subject of assign students == regular
+send message all students are assigned to the subject
+else
+display students list using below algo 
+
+
+This comes in faculty class  rooms ---->
+
+Stu display for selected sub:
+if(sub_cat=="regular")
+{
+Stud_list = Select * from class_students where classes_id=$id;
+}
+else
+{
+Stud_list = Select * from student_subject_map where class_id =$id and sub_id=$subid;
+}
+render (stud_display,['stud_list'=>$stud_list]);

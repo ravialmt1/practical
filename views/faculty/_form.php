@@ -34,7 +34,7 @@ use yii\helpers\Url;
 	<?php
 	
 	echo $form->field($model, 'course_id')->widget(DepDrop::classname(), [
-	'data'=>[1 => 'Tablets'],
+	'data'=>[1 => 'courses'],
     //'data' => \yii\helpers\ArrayHelper::map(\app\models\Course::find()->orderBy('course_id')->asArray()->all(), 'course_id', 'course_name'),
         'options' => ['placeholder' => 'Choose Course'],
     'type' => DepDrop::TYPE_SELECT2,

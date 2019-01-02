@@ -1,13 +1,13 @@
-$(function(){
-	$(document).on('click',' .fc-day',function(){
+$(document).ready(function(){
+	$(document).on('click','.fc-day',function(){
 		var date = $(this).attr('data-date');
-		$.get('create',{'date':date},function(data){
+		$.get('http://localhost/practical/events/create',{'date':date},function(data){
 		$('#modal').modal('show')
 .find('#modalContent')
-.html(data)		
+.html(data)	
 		})
 	})
-	alert("hi");
+	
 }
 
 );

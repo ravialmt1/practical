@@ -17,6 +17,7 @@ use mootensai\behaviors\UUIDBehavior;
  * @property \app\models\Attendance[] $attendances
  * @property \app\models\University $university
  * @property \app\models\Course $course
+ * @property \app\models\Timetable[] $timetables
  */
 class AttendanceBell extends \yii\db\ActiveRecord
 {
@@ -32,7 +33,8 @@ class AttendanceBell extends \yii\db\ActiveRecord
         return [
             'attendances',
             'university',
-            'course'
+            'course',
+            'timetables'
         ];
     }
 
@@ -44,7 +46,8 @@ class AttendanceBell extends \yii\db\ActiveRecord
         return [
             [['university_id', 'course_id', 'time_start', 'time_end'], 'required'],
             [['university_id', 'course_id'], 'integer'],
-            [['time_start', 'time_end'], 'string', 'max' => 100]
+            [['time_start', 'time_end'], 'string', 'max' => 100],
+			[['bellTime'], 'safe'],
         ];
     }
 
@@ -67,6 +70,7 @@ class AttendanceBell extends \yii\db\ActiveRecord
             'course_id' => 'Course ID',
             'time_start' => 'Time Start',
             'time_end' => 'Time End',
+			'bellTime' => 'Bell Time',
         ];
     }
     
@@ -93,12 +97,20 @@ class AttendanceBell extends \yii\db\ActiveRecord
     {
         return $this->hasOne(\app\models\Course::className(), ['course_id' => 'course_id']);
     }
+        
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBellTime()
+    {
+        return $this->time_start.' - '.$this->time_end;
+    }
     
     /**
      * @inheritdoc
      * @return array mixed
      */
-    public function behaviors()
+   /*  public function behaviors()
     {
         return [
             'uuid' => [
@@ -107,7 +119,7 @@ class AttendanceBell extends \yii\db\ActiveRecord
             ],
         ];
     }
-
+ */
 
     /**
      * @inheritdoc

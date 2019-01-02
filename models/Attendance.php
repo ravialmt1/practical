@@ -18,7 +18,7 @@ class Attendance extends BaseAttendance
         return array_replace_recursive(parent::rules(),
 	    [
             [['student_id', 'teacher_id', 'section_id', 'subject_id', 'bell_id', 'att_status'], 'required'],
-            [['student_id', 'teacher_id', 'section_id', 'subject_id', 'bell_id', 'att_status'], 'integer'],
+            [['student_id', 'teacher_id',  'subject_id', 'bell_id', 'att_status'], 'integer'],
             [['att_date'], 'safe']
         ]);
     }

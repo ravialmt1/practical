@@ -61,7 +61,7 @@ class Course extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uni_id', 'vertical', 'course_name', 'course_short_name', 'course_batch', 'created_by', 'updated_by', 'deleted_by', 'created_at', 'updated_at', 'deleted_at'], 'required'],
+            [['uni_id', 'vertical', 'course_name', 'course_short_name', 'course_batch'], 'required'],
             [['uni_id', 'created_by', 'updated_by', 'deleted_by'], 'integer'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['vertical', 'course_batch'], 'string', 'max' => 200],
@@ -90,6 +90,7 @@ class Course extends \yii\db\ActiveRecord
             'course_name' => 'Course Name',
             'course_short_name' => 'Course Short Name',
             'course_batch' => 'Course Batch',
+			'uni' =>'University',
         ];
     }
     
@@ -119,10 +120,10 @@ class Course extends \yii\db\ActiveRecord
                 'createdByAttribute' => 'created_by',
                 'updatedByAttribute' => 'updated_by',
             ],
-            'uuid' => [
+            /* 'uuid' => [
                 'class' => UUIDBehavior::className(),
                 'column' => 'course_id',
-            ],
+            ], */
         ];
     }
 

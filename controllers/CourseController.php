@@ -4,11 +4,14 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Course;
+use app\models\Events;
+use app\models\CourseSearch;
 use app\models\Students;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -17,14 +20,33 @@ class CourseController extends Controller
 {
     public function behaviors()
     {
-        return [
-            'verbs' => [
+        $behaviors['verbs'] = [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
                 ],
-            ],
+            ];
+		$behaviors['access'] = [
+		'class' => AccessControl::className(),
+		'rules' => [
+			[
+			'allow' => true,
+			'roles' => ['@'],
+			'matchCallback' => function($rules,$action){
+				$action =Yii::$app->controller->action->id;
+				$controller = Yii::$app->controller->id;
+				$route = "$action$controller";
+				$post = yii::$app->request->post();
+				if(\Yii::$app->user->can($route)){
+					
+					return true;
+				}
+				
+			} 
+			]
+		]
         ];
+		return $behaviors;
     }
 
     /**
@@ -33,13 +55,46 @@ class CourseController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Course::find(),
+		 $searchModel = new CourseSearch();
+		 $session = Yii::$app->session;
+		$university_id = $session->get('uni_id');
+		$year = 2018;
+		 if($university_id!='11111111'){
+		 $query = Course::find();
+$query->andFilterCompare('course_batch_end', '>2018'); 
+ $dataProvider = new ActiveDataProvider([
+    'query' => $query,
+    'pagination' => [
+        'pageSize' => 50,
+    ],
+    
+]);
+        //$dataProvider = $searchModel->search(Yii::$app->request->get(['uni_id' => 4]));
+
+        return $this->render('corporate/index', [
+            'dataProvider' => $dataProvider,
+			'searchModel' => $searchModel,
         ]);
+		 }
+		 else
+		 {
+			$query = Course::find()->where(['uni_id' => $university_id]);
+$query->andFilterCompare('course_batch_end', '>2018');  
+ $dataProvider = new ActiveDataProvider([
+    'query' => $query,
+    'pagination' => [
+        'pageSize' => 50,
+    ],
+    
+]);
+        //$dataProvider = $searchModel->search(Yii::$app->request->get(['uni_id' => 4]));
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+			'searchModel' => $searchModel,
         ]);
+		 }
+		
     }
 
     /**
@@ -52,6 +107,13 @@ class CourseController extends Controller
         $model = $this->findModel($id);
         return $this->render('view', [
             'model' => $this->findModel($id),
+        ]);
+    }
+	
+	public function actionExamination($id)
+    {
+        $model = $this->findModel($id);
+        return $this->render('examination',['model' => $model
         ]);
     }
 	
@@ -73,15 +135,21 @@ class CourseController extends Controller
      */
     public function actionCreate()
     {
+		
         $model = new Course();
 
         if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
             return $this->redirect(['view', 'id' => $model->course_id]);
+        } elseif (Yii::$app->request->isAjax) {
+            return $this->renderAjax('create', [
+                        'model' => $model
+            ]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                        'model' => $model
             ]);
         }
+		
     }
 
     /**
@@ -114,6 +182,39 @@ class CourseController extends Controller
         $this->findModel($id)->deleteWithRelated();
 
         return $this->redirect(['index']);
+    }
+	public function actionInfra($id)
+    {
+                 return $this->render('infra', [
+            'course_id' => $id,
+        ]);
+    }
+	public function actionFees($id)
+    {
+                 return $this->render('fees', [
+            'course_id' => $id,
+        ]);
+    }
+	 public function actionEvents()
+    {
+		//$events = array();
+		$times = Events :: find()->all();
+		
+
+    foreach ($times AS $time){
+      //Testing
+      $Event = new \yii2fullcalendar\models\Event();
+      $Event->id = $time->id;
+      $Event->title = $time->title;
+      $Event->start = $time -> created_at;
+      $events[] = $Event;
+    }
+
+        
+
+        return $this->render('events', [
+            'events' => $events,
+        ]);
     }
 
     

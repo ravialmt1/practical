@@ -1,0 +1,36 @@
+AO has to do
+add students details
+create class
+add students
+add subjects
+assign faculties to subjects
+add timetable
+add fee collection details with fees receipts
+get feedback
+
+
+University acquisition team
+Enter Universities details
+Enter Courses
+
+Hr team
+add faculties
+add aos
+leave details
+
+Academics team
+Add attendances
+add course matrix, TLP
+add project database
+
+sales team
+add students
+
+Placement team
+add company database
+Announce placement activities
+add placed students
+add internship students
+
+
+

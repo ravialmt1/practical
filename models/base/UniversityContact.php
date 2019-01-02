@@ -116,10 +116,10 @@ class UniversityContact extends \yii\db\ActiveRecord
                 'createdByAttribute' => 'created_by',
                 'updatedByAttribute' => 'updated_by',
             ],
-            'uuid' => [
+            /* 'uuid' => [
                 'class' => UUIDBehavior::className(),
                 'column' => 'course_id',
-            ],
+            ], */
         ];
     }
 

@@ -11,6 +11,10 @@ use yii\filters\VerbFilter;
 
 /**
  * EventsController implements the CRUD actions for Events model.
+ 
+ Calendar can be Academic Calendar, Cultural Calendar and Activity calender
+ 
+ Ativity calendar consists of events such s Meetings, Seminars, Tests, Examinations, Audits, Feedback and parents teacher meetings.
  */
 class EventsController extends Controller
 {
@@ -30,6 +34,12 @@ class EventsController extends Controller
      * Lists all Events models.
      * @return mixed
      */
+	 
+	 public function actionIndex2()
+    {
+		return $this->render('index2', []);
+		
+	}
     public function actionIndex()
     {
 		//$events = array();

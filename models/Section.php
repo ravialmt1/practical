@@ -19,7 +19,7 @@ class Section extends BaseSection
 	    [
             [['stu_id', 'semester', 'section', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'required'],
             [['stu_id', 'semester', 'created_by', 'updated_by'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at','vertical'], 'safe'],
             [['section'], 'string', 'max' => 10]
         ]);
     }

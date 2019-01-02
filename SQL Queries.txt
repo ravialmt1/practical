@@ -1,0 +1,8 @@
+To insert student Id and Class ID from Students table and Class Table
+
+INSERT INTO studentsclass (student_id, class_id)
+select V.id, E.id from classes E
+inner join students V
+ON E.course_id=V.course_id and
+E.sem=V.semester and 
+E.section=V.section

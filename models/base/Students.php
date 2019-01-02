@@ -40,6 +40,7 @@ class Students extends \yii\db\ActiveRecord
     use \mootensai\relation\RelationTrait;
 
 
+	public $vertical;
     /**
     * This function helps \mootensai\relation\RelationTrait runs faster
     * @return array relation names of this model
@@ -160,7 +161,7 @@ class Students extends \yii\db\ActiveRecord
      * @inheritdoc
      * @return array mixed
      */
-    public function behaviors()
+    /* public function behaviors()
     {
         return [
             'uuid' => [
@@ -168,7 +169,7 @@ class Students extends \yii\db\ActiveRecord
                 'column' => 'id',
             ],
         ];
-    }
+    } */
 
 
     /**

@@ -4,10 +4,12 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Students;
+
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\Pagination;
 
 /**
  * StudentsController implements the CRUD actions for Students model.
@@ -32,13 +34,51 @@ class StudentsController extends Controller
      */
     public function actionIndex()
     {
+		$model = new Students();
+		$get_val = Yii::$app->request->post('Students');
+		$query=Students::find()->where(['course_id'=>$get_val['course_id'],'semester' => $get_val['semester'],'section' => $get_val['section']]);
+		$pages = new Pagination(['totalCount' => $query->count()]);
         $dataProvider = new ActiveDataProvider([
-            'query' => Students::find(),
+            'query' => $query,
+			
+			
+
         ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+			'model' => $model,
+			'pages' => $pages,
+			
+			
+			
         ]);
+    }
+	
+	public function actionViewstudents()
+    {
+		$model = new Students();
+		if ($model->load(Yii::$app->request->post()) ) {
+			$post_val = Yii::$app->request->post('Students');
+			 $dataProvider = new ActiveDataProvider([
+            'query' => Students::find()->where(['uni_id' => $post_val['uni_id'],'course_id' => $post_val['course_id'],'semester' => $post_val['semester'],'section' => $post_val['section']]),
+			'pagination'=> ['defaultPageSize' => PAGE_SIZE],
+        ]);
+            return $this->render('viewstudents2', ['dataProvider' => $dataProvider]);
+        }
+		else
+		{
+		
+        $dataProvider = new ActiveDataProvider([
+            'query' => Students::find(),
+        ]);
+
+        return $this->render('viewstudents', [
+            //'dataProvider' => $dataProvider,
+			'model' => $model,
+			//'row' => $row,
+        ]);
+		}
     }
 
     /**
@@ -78,12 +118,14 @@ class StudentsController extends Controller
     public function actionCreate()
     {
         $model = new Students();
+		
 
         if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+				
             ]);
         }
     }
@@ -105,6 +147,19 @@ class StudentsController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+	
+	public function actionProfile() // put userid of the loggen in user if he is a student and fetch all details and display in his / her profile
+    {
+        /* $model = $this->findModel($id);
+
+        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else { */
+            return $this->render('profile');
+             /*    'model' => $model,
+            ]);
+        } */
     }
 
     /**

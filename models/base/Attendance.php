@@ -3,6 +3,9 @@
 namespace app\models\base;
 
 use Yii;
+use kartik\builder\TabularForm;
+use kartik\grid\GridView;
+use yii\helpers\ArrayHelper;
 use mootensai\behaviors\UUIDBehavior;
 
 /**
@@ -40,6 +43,7 @@ class Attendance extends \yii\db\ActiveRecord
             'section',
             'subject',
             'bell'
+
         ];
     }
 
@@ -83,6 +87,25 @@ class Attendance extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+	 
+	 public function getFormAttribs() {
+    return [
+        // primary key column
+        'id'=>[ // primary key attribute
+            'type'=>TabularForm::INPUT_HIDDEN, 
+            'columnOptions'=>['hidden'=>true]
+        ], 
+		 'stu_name'=>[ // primary key attribute
+            'type'=>TabularForm::INPUT_STATIC, 
+            //'columnOptions'=>['hidden'=>true]
+        ], 
+		'att_date'=>[ // primary key attribute
+            'type'=>TabularForm::INPUT_STATIC, 
+            //'columnOptions'=>['hidden'=>true]
+        ], 
+		
+];		
+}
     public function getStudent()
     {
         return $this->hasOne(\app\models\Students::className(), ['id' => 'student_id']);
@@ -124,7 +147,7 @@ class Attendance extends \yii\db\ActiveRecord
      * @inheritdoc
      * @return array mixed
      */
-    public function behaviors()
+    /* public function behaviors()
     {
         return [
             'uuid' => [
@@ -133,7 +156,7 @@ class Attendance extends \yii\db\ActiveRecord
             ],
         ];
     }
-
+ */
 
     /**
      * @inheritdoc

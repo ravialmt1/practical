@@ -24,7 +24,10 @@ class Section extends \yii\db\ActiveRecord
 {
     use \mootensai\relation\RelationTrait;
 
-
+public $vertical;
+public $att_date;
+public $hours;
+public $subject;
     /**
     * This function helps \mootensai\relation\RelationTrait runs faster
     * @return array relation names of this model
@@ -44,7 +47,7 @@ class Section extends \yii\db\ActiveRecord
     {
         return [
             [['stu_id', 'semester', 'section', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'required'],
-            [['stu_id', 'semester', 'created_by', 'updated_by'], 'integer'],
+            [['stu_id', 'semester', 'hours','created_by', 'updated_by'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['section'], 'string', 'max' => 10]
         ];
@@ -68,6 +71,7 @@ class Section extends \yii\db\ActiveRecord
             'stu_id' => 'Stu ID',
             'semester' => 'Semester',
             'section' => 'Section',
+			
         ];
     }
     
@@ -91,7 +95,7 @@ class Section extends \yii\db\ActiveRecord
      * @inheritdoc
      * @return array mixed
      */
-    public function behaviors()
+    /* public function behaviors()
     {
         return [
             'uuid' => [
@@ -99,7 +103,7 @@ class Section extends \yii\db\ActiveRecord
                 'column' => 'id',
             ],
         ];
-    }
+    } */
 
 
     /**

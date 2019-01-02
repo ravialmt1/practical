@@ -31,7 +31,7 @@ class Faculty extends \yii\db\ActiveRecord
         return [
             'attendances',
             'uni',
-            'course'
+            
         ];
     }
 
@@ -41,9 +41,9 @@ class Faculty extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fac_name', 'uni_id', 'course_id'], 'required'],
-            [['uni_id', 'course_id'], 'integer'],
-            [['fac_name'], 'string', 'max' => 100]
+            [['fac_name', 'uni_id', 'vertical'], 'required'],
+            [['uni_id'], 'integer'],
+            [['fac_name','vertical'], 'string', 'max' => 100]
         ];
     }
 
@@ -61,10 +61,10 @@ class Faculty extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'fac_id' => 'Fac ID',
+            'fac_id' => 'Faculty',
             'fac_name' => 'Fac Name',
             'uni_id' => 'Uni ID',
-            'course_id' => 'Course ID',
+            'vertical' => 'Vertical',
         ];
     }
     
@@ -87,16 +87,13 @@ class Faculty extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCourse()
-    {
-        return $this->hasOne(\app\models\Course::className(), ['course_id' => 'course_id']);
-    }
+   
     
     /**
      * @inheritdoc
      * @return array mixed
      */
-    public function behaviors()
+    /* public function behaviors()
     {
         return [
             'uuid' => [
@@ -104,7 +101,7 @@ class Faculty extends \yii\db\ActiveRecord
                 'column' => 'fac_id',
             ],
         ];
-    }
+    } */
 
 
     /**
